@@ -10,3 +10,4 @@ import br.edu.fatecfranca.api.models.Aluno;
 public interface AlunoRepository
        extends MongoRepository<Aluno, String> {
 }
+
