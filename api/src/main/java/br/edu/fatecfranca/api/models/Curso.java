@@ -4,6 +4,8 @@ package br.edu.fatecfranca.api.models;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,8 +15,9 @@ public class Curso {
    @Id
    private String id;
 
-
+   @NotBlank(message = "O nome é obrigatório.")
    private String nome;
+  @NotNull(message = "A carga horaria é obrigatória.")
    private Integer cargaHoraria;
    private Double valor;
    

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 
 import br.edu.fatecfranca.api.models.Curso;
 import br.edu.fatecfranca.api.services.CursoService;
@@ -48,7 +49,7 @@ public class CursoController {
 
 
    @PostMapping
-   public ResponseEntity<Curso> criar(@RequestBody Curso curso) {
+   public ResponseEntity<Curso> criar(@Valid @RequestBody Curso curso) {
        Curso cursoSalvo = service.salvar(curso);
 
 
@@ -61,7 +62,7 @@ public class CursoController {
    @PutMapping("/{id}")
    public ResponseEntity<Curso> atualizar(
            @PathVariable String id,
-           @RequestBody Curso curso) {
+           @Valid @RequestBody Curso curso) {
 
 
        if (service.buscarPorId(id).isEmpty()) {

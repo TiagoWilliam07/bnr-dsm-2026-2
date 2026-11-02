@@ -1,3 +1,4 @@
+
 package br.edu.fatecfranca.api.controllers;
 
 import java.util.List;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
+import br.edu.fatecfranca.api.dtos.TurmaResponse;
 import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.services.TurmaService;
 
@@ -26,20 +30,34 @@ public class TurmaController {
         this.service = service;
     }
 
+    // Lista todas as turmas com os detalhes
     @GetMapping
-    public List<Turma> listarTodos() {
-        return service.listarTodos();
+    public List<TurmaResponse> listarTodos() {
+        return service.listarComDetalhes();
     }
 
+    // Busca uma turma pelo ID com os detalhes
     @GetMapping("/{id}")
-    public ResponseEntity<Turma> buscarPorId(@PathVariable String id) {
-        return service.buscarPorId(id)
+    public ResponseEntity<TurmaResponse> buscarPorId(
+            @PathVariable String id) {
+
+        return service.buscarComDetalhes(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Lista as turmas de um curso
+    @GetMapping("/curso/{cursoId}")
+    public List<TurmaResponse> listarPorCurso(
+            @PathVariable String cursoId) {
+
+        return service.listarPorCursoComDetalhes(cursoId);
+    }
+
+    // Cria uma turma
     @PostMapping
-    public ResponseEntity<Turma> criar(@RequestBody Turma turma) {
+    public ResponseEntity<Turma> criar(@Valid @RequestBody Turma turma) {
+
         Turma turmaSalva = service.salvar(turma);
 
         return ResponseEntity
@@ -47,10 +65,11 @@ public class TurmaController {
                 .body(turmaSalva);
     }
 
+    // Atualiza uma turma
     @PutMapping("/{id}")
     public ResponseEntity<Turma> atualizar(
             @PathVariable String id,
-            @RequestBody Turma turma) {
+            @Valid @RequestBody Turma turma) {
 
         if (service.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -63,8 +82,10 @@ public class TurmaController {
         return ResponseEntity.ok(turmaAtualizada);
     }
 
+    // Exclui uma turma
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable String id) {
+    public ResponseEntity<Void> excluir(
+            @PathVariable String id) {
 
         if (service.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();
