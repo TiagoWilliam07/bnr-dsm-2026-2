@@ -1,17 +1,27 @@
 package br.edu.fatecfranca.api.models;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class Nota {
 
+    @NotBlank(message = "A identificação da avaliação é obrigatória.")
+    private String avaliacao;
+
+    @NotNull(message = "O valor da nota é obrigatório.")
+    @DecimalMin(value = "0.0", message = "A nota não pode ser menor que 0.")
+    @DecimalMax(value = "10.0", message = "A nota não pode ser maior que 10.")
     private Double valor;
-    private String descricao;
 
     public Nota() {
         
     }
 
-    public Nota(Double valor, String descricao) {
+    public Nota(Double valor, String avaliacao) {
         this.valor = valor;
-        this.descricao = descricao;
+        this.avaliacao = avaliacao;
     }
 
     public Double getValor() {
@@ -21,10 +31,10 @@ public class Nota {
         this.valor = valor; 
     }
 
-    public String getDescricao() {
-         return descricao;
+    public String getavaliacao() {
+         return avaliacao;
          }
-    public void setDescricao(String descricao) {
-         this.descricao = descricao;
+    public void setavaliacao(String avaliacao) {
+         this.avaliacao = avaliacao;
          }
 }

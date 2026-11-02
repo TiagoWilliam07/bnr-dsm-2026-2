@@ -9,5 +9,8 @@ import br.edu.fatecfranca.api.models.Aluno;
 
 public interface AlunoRepository
        extends MongoRepository<Aluno, String> {
+        boolean existsByCpf(String cpf);
+        boolean existsByCpfAndIdNot(String cpf, String id);
 }
+
 

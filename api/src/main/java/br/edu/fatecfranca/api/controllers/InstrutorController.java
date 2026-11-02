@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import br.edu.fatecfranca.api.models.Instrutor;
 import br.edu.fatecfranca.api.services.InstrutorService;
 
@@ -30,7 +31,7 @@ public class InstrutorController {
     }
 
     @PostMapping
-    public ResponseEntity<Instrutor> criar(@RequestBody Instrutor instrutor) {
+    public ResponseEntity<Instrutor> criar(@Valid@RequestBody Instrutor instrutor) {
         Instrutor instrutorSalvo = service.salvar(instrutor);
         return ResponseEntity.status(HttpStatus.CREATED).body(instrutorSalvo);
     }

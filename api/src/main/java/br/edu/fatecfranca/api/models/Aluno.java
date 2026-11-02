@@ -1,8 +1,9 @@
-
 package br.edu.fatecfranca.api.models;
 
 
 import java.util.List;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,7 +35,9 @@ public class Aluno {
    private String email;
 
 
-   private List<Endereco> enderecos;
+   @NotEmpty(message = "O aluno deve possuir ao menos um endereço.")
+   private List<@Valid Endereco> enderecos;
+
 
 
    // Construtor genérico

@@ -1,6 +1,7 @@
 package br.edu.fatecfranca.api.controllers;
 
 import java.util.List;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class MatriculaController {
     }
 
     @PostMapping
-    public ResponseEntity<Matricula> criar(@RequestBody Matricula matricula) {
+    public ResponseEntity<Matricula> criar(@Valid @RequestBody Matricula matricula) {
         Matricula matriculaSalva = service.salvar(matricula);
 
         return ResponseEntity
@@ -50,7 +51,7 @@ public class MatriculaController {
     @PutMapping("/{id}")
     public ResponseEntity<Matricula> atualizar(
             @PathVariable String id,
-            @RequestBody Matricula matricula) {
+            @Valid @RequestBody Matricula matricula) {
 
         if (service.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();

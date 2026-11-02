@@ -1,20 +1,38 @@
 package br.edu.fatecfranca.api.models;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Document(collection = "matriculas")
 public class Matricula {
 
     @Id
     private String id;
-    
-    private String alunoId; // Referência pelo ID do Aluno
-    private String turmaId; // Referência pelo ID da Turma
+
+    @NotBlank(message = "O identificador do aluno é obrigatório.")
+    private String alunoId;
+
+    @NotBlank(message = "O identificador da turma é obrigatório.")
+    private String turmaId;
+
+    @NotBlank(message = "A data da matrícula é obrigatória.")
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "A data da matrícula deve estar no formato AAAA-MM-DD.")
     private String dataMatricula;
-    
-    private List<Nota> notas;
+
+    @NotBlank(message = "A situação da matrícula é obrigatória.")
+    private String situacao;
+
+    private List<@Valid Nota> notas;
 
     public Matricula() {
         
@@ -26,6 +44,18 @@ public class Matricula {
         this.turmaId = turmaId;
         this.dataMatricula = dataMatricula;
         this.notas = notas;
+    }
+
+    @JsonIgnore
+    @AssertTrue(message = "A data da matrícula deve ser uma data válida.")
+    public boolean isDataMatriculaValida() {
+        if (dataMatricula == null || !dataMatricula.matches("\\d{4}-\\d{2}-\\d{2}")) return true;
+        try {
+            LocalDate.parse(dataMatricula);
+            return true;
+        } catch (DateTimeParseException exception) {
+            return false;
+        }
     }
 
     public String getId() {

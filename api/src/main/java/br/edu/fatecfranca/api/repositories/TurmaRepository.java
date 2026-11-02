@@ -11,4 +11,6 @@ public interface TurmaRepository
         extends MongoRepository<Turma, String> {
 
     List<Turma> findByCursoId(String cursoId);
+    boolean existsByCursoId(String cursoId);
+
 }

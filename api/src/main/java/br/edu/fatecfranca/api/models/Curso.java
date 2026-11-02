@@ -3,27 +3,33 @@
 package br.edu.fatecfranca.api.models;
 
 import java.util.List;
-
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 @Document(collection = "cursos")
 public class Curso {
     
    @Id
-   private String id;
+    private String id;
 
-   @NotBlank(message = "O nome é obrigatório.")
-   private String nome;
-  @NotNull(message = "A carga horaria é obrigatória.")
-   private Integer cargaHoraria;
-   private Double valor;
-   
+    @NotBlank(message = "O nome é obrigatório.")
+    private String nome;
 
+    @NotNull(message = "A carga horária é obrigatória.")
+    @Positive(message = "A carga horária deve ser maior que zero.")
+    private Integer cargaHoraria;
 
-   private List<Modulo> modulos;
+    @NotNull(message = "O valor do curso é obrigatório.")
+    @DecimalMin(value = "0.0", message = "O valor do curso não pode ser negativo.")
+    private Double valor;
+
+    @NotEmpty(message = "O curso deve possuir ao menos um módulo.")
+    private List<@Valid Modulo> modulos;
 
 
    // Construtor genérico
